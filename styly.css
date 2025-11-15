@@ -113,7 +113,7 @@ hr {
 }
 
 /* Ostatní prvky specifické pro váš obsah */
-pre.language-console:before {
+pre code.language-console:before {
   content: "Console";
   color: var(--ctp-blue);
   display: block;
@@ -122,7 +122,7 @@ pre.language-console:before {
   font-weight: bold;
 }
 
-pre.language-bash:before {
+pre code.language-bash:before {
   content: "Bash";
   color: var(--ctp-blue);
   display: block;
@@ -131,7 +131,7 @@ pre.language-bash:before {
   font-weight: bold;
 }
 
-pre.language-json:before {
+pre code.language-json:before {
   content: "JSON";
   color: var(--ctp-blue);
   display: block;
@@ -191,4 +191,10 @@ td:first-child, th:first-child {
   color: var(--ctp-blue);
   border-bottom: 0px;
   text-align: center;
+}
+
+img {
+  display: block;
+  margin: auto;
+  width: 100%;
 }
