@@ -1,0 +1,276 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="../styly.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html">
+    <h1 id="firewall">Firewall</h1>
+    <h2 id="packet-mode-vs-flow-mode">Packet mode VS Flow mode</h2>
+    <img src="./src/firewall_modes.png" alt="firewall_modes">
+    <h2 id="packet-mode">Packet mode</h2>
+    <h3 id="nastavení-packet-módu-z-flow-módu">Nastavení Packet módu z Flow módu</h3>
+    <pre class=" language-console"><code class="prism  language-console"># delete security
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># set security forwarding-options family inet
+        mode packet-based
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># set security forwarding-options family inet6
+        mode packet-based
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># set security forwarding-options family mpls
+        mode packet-based
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console">&gt; show security flow status
+      </code></pre>
+    <h3 id="firewall-filter">Firewall filter</h3>
+    <pre class=" language-console"><code class="prism  language-console"># show filter
+      </code></pre>
+    <pre class=" language-json"><code class="prism  language-json">family inet <span class="token punctuation">{</span>
+        filter filter<span class="token operator">-</span><span class="token keyword">in</span> <span
+          class="token punctuation">{</span>
+        term discard<span class="token operator">-</span>icmp <span class="token punctuation">{</span>
+        <span class="token keyword">from</span> <span class="token punctuation">{</span>
+        source<span class="token operator">-</span>address <span class="token punctuation">{</span>
+        <span class="token number">1.2</span><span class="token punctuation">.</span><span
+          class="token number">3.4</span><span class="token operator">/</span><span class="token number">32</span><span
+          class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        destination<span class="token operator">-</span>address <span class="token punctuation">{</span>
+        <span class="token number">5.6</span><span class="token punctuation">.</span><span
+          class="token number">7.8</span><span class="token operator">/</span><span class="token number">32</span><span
+          class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        protocol icmp<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        then <span class="token punctuation">{</span>
+        reject<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        term permit<span class="token operator">-</span>others <span class="token punctuation">{</span>
+        then accept<span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      </code></pre>
+    <h3 id="firewall-filter---interface">Firewall filter - interface</h3>
+    <pre class=" language-console"><code class="prism  language-console"># show interfaces ge-0/0/9
+      </code></pre>
+    <pre class=" language-json"><code class="prism  language-json">unit <span class="token number">0</span> <span
+          class="token punctuation">{</span>
+        family inet <span class="token punctuation">{</span>
+        filter <span class="token punctuation">{</span>
+        input filter<span class="token operator">-</span><span class="token keyword">in</span><span
+          class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        address <span class="token number">10.45</span><span class="token punctuation">.</span><span
+          class="token number">28.9</span><span class="token operator">/</span><span class="token number">24</span><span
+          class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      </code></pre>
+    <h3 id="firewall-filter---monitoring">Firewall filter - monitoring</h3>
+    <pre class=" language-console"><code class="prism  language-console"># show firewall
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># show firewall filter &lt;filter-name&gt;
+      </code></pre>
+    <h2 id="flow-mode">Flow mode</h2>
+    <h3 id="nastavení-flow-módu-z-packet-módu">Nastavení Flow módu z Packet módu</h3>
+    <pre class=" language-console"><code class="prism  language-console"># delete security
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># set security forwarding-options family inet
+        mode flow-based
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># set security forwarding-options family inet6
+        mode flow-based
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># set security forwarding-options family mpls
+        mode flow-based
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console">&gt; show security flow status
+      </code></pre>
+    <h3 id="security---zones">Security - zones</h3>
+    <pre class=" language-console"><code class="prism  language-console"># delete security
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># show security zones
+      </code></pre>
+    <pre class=" language-json"><code class="prism  language-json">security<span class="token operator">-</span>zone
+        <span class="token operator">&lt;</span>zone<span class="token operator">-</span>name<span
+          class="token operator">&gt;</span> <span class="token punctuation">{</span>
+        interfaces <span class="token punctuation">{</span>
+        <span class="token operator">&lt;</span><span class="token keyword">interface</span><span
+          class="token operator">-</span>name<span class="token operator">&gt;</span> <span
+          class="token punctuation">{</span>
+        host<span class="token operator">-</span>inbound<span class="token operator">-</span>traffic <span
+          class="token punctuation">{</span>
+        system<span class="token operator">-</span>services <span class="token punctuation">{</span>
+        <span class="token operator">&lt;</span>service<span class="token operator">&gt;</span>
+        <span class="token punctuation">}</span>
+        protocols <span class="token punctuation">{</span>
+        <span class="token operator">&lt;</span>protocol<span class="token operator">&gt;</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      </code></pre>
+    <h3 id="security---policy">Security - policy</h3>
+    <pre class=" language-console"><code class="prism  language-console"># show security policies
+      </code></pre>
+    <pre class=" language-json"><code class="prism  language-json"><span class="token keyword">from</span><span
+          class="token operator">-</span>zone <span class="token operator">&lt;</span>zone<span
+          class="token operator">-</span>name<span class="token operator">&gt;</span> to<span
+          class="token operator">-</span>zone <span class="token operator">&lt;</span>zone<span
+          class="token operator">-</span>name<span class="token operator">&gt;</span> <span
+          class="token punctuation">{</span>
+        policy <span class="token operator">&lt;</span>policy<span class="token operator">-</span>name<span
+          class="token operator">&gt;</span> <span class="token punctuation">{</span>
+        match <span class="token punctuation">{</span>
+        source<span class="token operator">-</span>address <span class="token operator">&lt;</span>src<span
+          class="token operator">-</span>address<span class="token operator">&gt;</span><span
+          class="token punctuation">;</span>
+        destination<span class="token operator">-</span>address <span class="token operator">&lt;</span>dst<span
+          class="token operator">-</span>address<span class="token operator">&gt;</span><span
+          class="token punctuation">;</span>
+        application <span class="token operator">&lt;</span>app<span class="token operator">-</span>name<span
+          class="token operator">&gt;</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        then <span class="token punctuation">{</span>
+        <span class="token operator">&lt;</span>action<span class="token operator">&gt;</span><span
+          class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      </code></pre>
+    <h3 id="monitoring">Monitoring</h3>
+    <pre class=" language-console"><code class="prism  language-console"># show security flow session
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># show security flow session source-prefix
+        &lt;prefix&gt;
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># show security flow statistics
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># show security policies
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># show security policies from-zone &lt;zone&gt;
+        to zone &lt;zone&gt;
+      </code></pre>
+    <h1 id="rpf">RPF</h1>
+    <p>RPF je zkratka pro <strong>Reverse Path Forwarding</strong> (česky <strong>Zpětné směrování cestou</strong>). Jde
+      o techniku používanou primárně pro zvýšení bezpečnosti sítě a je klíčová pro fungování
+      <strong>Multicastu</strong>.</p>
+    <h2 id="rpf-v-kontextu-bezpečnosti-unicast-rpf---urpf">RPF v Kontextu Bezpečnosti (Unicast RPF - uRPF)</h2>
+    <ul>
+      <li>V kontextu <strong>Unicast</strong> (běžného) provozu se RPF používá jako <strong>bezpečnostní mechanismus k
+          zabránění IP spoofingu</strong>.</li>
+    </ul>
+    <h3 id="jak-urpf-funguje">Jak uRPF funguje?</h3>
+    <ol>
+      <li>
+        <p>Router obdrží IP paket.</p>
+      </li>
+      <li>
+        <p>Zkontroluje <strong>zdrojovou IP adresu</strong> (Source IP Address) v hlavičce paketu.</p>
+      </li>
+      <li>
+        <p>Využije svou <strong>směrovací tabulku (FIB)</strong>, aby určil, kudy by měl paket se
+          <strong>stejnou</strong> zdrojovou adresou <strong>opustit</strong> síť, pokud by byl odesílán lokálně.</p>
+      </li>
+      <li>
+        <p>Porovná toto zjištěné <strong>výstupní rozhraní</strong> s <strong>rozhraním, na kterém paket skutečně
+            přišel</strong> (vstupní rozhraní).</p>
+        <ul>
+          <li>
+            <p><strong>Pravidlo:</strong> Pokud by nejlepší cesta k dosažení zdrojové IP adresy vedla
+              <strong>zpět</strong> přes rozhraní, ze kterého paket přišel, <strong>RPF kontrola projde</strong> (paket
+              je legitimní).</p>
+          </li>
+          <li>
+            <p>Pokud by nejlepší cesta k dosažení zdrojové IP adresy vedla <strong>jinudy</strong> (např. ven do
+              internetu nebo přes jiný port), <strong>RPF kontrola selže</strong> (paket je považován za
+              zfalšovaný/spoofed) a <strong>paket je zahozen</strong>.</p>
+          </li>
+        </ul>
+      </li>
+    </ol>
+    <h3 id="cíle-urpf">Cíle uRPF:</h3>
+    <ul>
+      <li>
+        <p><strong>Zabrání IP Spoofingu:</strong> Útočníci nemohou předstírat, že pocházejí z adresy, ke které router
+          nemá platnou cestu vedoucí zpět přes daný vstupní port.</p>
+      </li>
+      <li>
+        <p><strong>Zmírnění DoS/DDoS:</strong> Pomáhá zastavit šíření útoků, které používají zfalšované zdrojové adresy
+          (např. útoky typu <strong>Smurf</strong>).</p>
+      </li>
+    </ul>
+    <h2 id="rpf-v-kontextu-multicastu">RPF v Kontextu Multicastu</h2>
+    <ul>
+      <li>V kontextu <strong>Multicast</strong> provozu (např. protokol PIM) je RPF <strong>zásadní pro vytvoření stromu
+          distribuce dat</strong> (Multicast Distribution Tree) a pro <strong>zajištění loop-free (bezsmyčkového) šíření
+          dat</strong>.</li>
+    </ul>
+    <h3 id="jak-rpf-funguje-u-multicastu">Jak RPF funguje u Multicastu?</h3>
+    <ol>
+      <li>
+        <p>Router obdrží Multicast paket určený pro skupinu G ze zdroje S.</p>
+      </li>
+      <li>
+        <p>Zkontroluje <strong>zdrojovou IP adresu</strong> (S).</p>
+      </li>
+      <li>
+        <p>Využije svou <strong>Unicast směrovací tabulku</strong> (FIB), aby zjistil, jaká je <strong>nejlepší cesta
+            zpět ke zdroji S</strong>.</p>
+      </li>
+      <li>
+        <p>Pokud paket přišel na rozhraní, které je na <strong>nejlepší (nejkratší)</strong> cestě ke zdroji S,
+          <strong>RPF kontrola projde</strong>.</p>
+        <ul>
+          <li>Router poté paket <strong>přepošle</strong> na všechna ostatní rozhraní, kde jsou přihlášeni příjemci
+            skupiny G.</li>
+        </ul>
+      </li>
+      <li>
+        <p>Pokud paket přišel na <strong>jiné rozhraní</strong> (např. delší nebo vedlejší cesta), <strong>RPF kontrola
+            selže</strong> (indikuje smyčku nebo neoptimální tok) a <strong>paket je zahozen</strong>.</p>
+      </li>
+    </ol>
+    <h3 id="cíle-rpf-v-multicastu">Cíle RPF v Multicastu:</h3>
+    <ul>
+      <li>
+        <p><strong>Bezsmyčkové Šíření:</strong> RPF zajišťuje, že Multicast provoz teče pouze po jedné, optimální cestě,
+          čímž se zabrání nekonečným smyčkám.</p>
+      </li>
+      <li>
+        <p><strong>Vytvoření Distribučního Stromu:</strong> RPF definuje <strong>cestu od zdroje</strong> (Source Path)
+          a tím pádem i <strong>kořen</strong> (Root) distribučního stromu, což je klíčové pro všechny Multicast
+          směrovací protokoly.</p>
+      </li>
+    </ul>
+    <h2 id="konfigurace">Konfigurace</h2>
+    <pre class=" language-console"><code class="prism  language-console"># show interface ge-0/0/9
+      </code></pre>
+    <pre class=" language-json"><code class="prism  language-json">ge<span class="token number">-0</span><span
+          class="token operator">/</span><span class="token number">0</span><span class="token operator">/</span><span
+          class="token number">9</span> <span class="token punctuation">{</span>
+        unit <span class="token number">0</span> <span class="token punctuation">{</span>
+        family inet <span class="token punctuation">{</span>
+        rpf<span class="token operator">-</span>check<span class="token punctuation">;</span>
+        address <span class="token number">12.34</span><span class="token punctuation">.</span><span
+          class="token number">56.78</span><span class="token operator">/</span><span
+          class="token number">29</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      </code></pre>
+    <pre class=" language-console"><code class="prism  language-console"># show interface ge-0/0/9 extensive
+      </code></pre>
+  </div>
+</body>
+
+</html>

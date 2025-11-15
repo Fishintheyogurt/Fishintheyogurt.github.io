@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="../styly.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html">
+    <h2 id="route-filter">Route filter</h2>
+    <p><strong>Route filter</strong> je jedním z hlavních typů <strong>match kritérií</strong> (podmínek shody), které
+      se používají v rámci termínů (terms) směrovacích politik. Jeho primární funkcí je <strong>filtrovat (vybírat)
+        směrovací prefixy</strong> (cílové sítě) na základě jejich <strong>délky masky</strong> (prefix-length).</p>
+    <pre class=" language-json"><code class="prism  language-json">policy<span class="token operator">-</span>options
+        <span class="token punctuation">{</span>
+        policy<span class="token operator">-</span>statement <span class="token operator">&lt;</span>policy<span
+          class="token operator">-</span>name<span class="token operator">&gt;</span> <span
+          class="token punctuation">{</span>
+        term <span class="token operator">&lt;</span>name<span class="token operator">&gt;</span> <span
+          class="token punctuation">{</span>
+        <span class="token keyword">from</span> <span class="token punctuation">{</span>
+        protocol <span class="token operator">&lt;</span>protocol<span class="token operator">-</span>name<span
+          class="token operator">&gt;</span><span class="token punctuation">;</span>
+        route<span class="token operator">-</span>filter <span class="token operator">&lt;</span>network<span
+          class="token operator">&gt;</span> <span class="token operator">&lt;</span>matcher<span
+          class="token operator">&gt;</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        then <span class="token operator">&lt;</span>action<span class="token operator">&gt;</span><span
+          class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      </code></pre>
+    <h3 id="route-matchers">Route matchers</h3>
+    <img src="./src/route_matchers.gif"></img>
+    <ul>
+      <li>
+        <p>exact: Shoda nastane pouze v případě, že prefix trasy se shoduje přesně s prefixem a délkou masky definovanou
+          ve filtru.</p>
+        <pre><code> Příklad: route-filter 10.0.0.0/8 exact; se shoduje pouze s 10.0.0.0/8.
+          </code></pre>
+      </li>
+      <li>
+        <p>longer: Shoda nastane pro všechny trasy, které spadají pod definovaný prefix a mají delší masku než
+          definovaný prefix.</p>
+        <pre><code> Příklad: route-filter 10.0.0.0/8 longer; se shoduje s 10.0.0.0/9, 10.1.2.0/24 atd., ale ne s
+            10.0.0.0/8.
+          </code></pre>
+      </li>
+      <li>
+        <p>orlonger: Shoda nastane pro definovaný prefix a všechny delší masky spadající pod něj.</p>
+        <pre><code> Příklad: route-filter 10.0.0.0/8 orlonger; se shoduje s 10.0.0.0/8, 10.0.0.0/9, 10.1.2.0/24 atd.
+          </code></pre>
+      </li>
+      <li>
+        <p>upto: Umožňuje definovat maximální délku masky. Shoda nastane, pokud trasa spadá pod definovaný prefix a její
+          maska je mezi délkou masky definované sítě a zadanou maximální délkou.</p>
+        <pre><code> Příklad: route-filter 172.16.0.0/16 upto /24; se shoduje s 172.16.0.0/16 až 172.16.255.0/24.
+          </code></pre>
+      </li>
+      <li>
+        <p>prefix-length-range: Umožňuje specifikovat rozsah délek masek pro shodu.</p>
+        <pre><code> Příklad: route-filter 192.168.0.0/16 prefix-length-range /18-/20; se shoduje s trasami, které
+            začínají 192.168.x.x a mají délku masky /18, /19 nebo /20.
+          </code></pre>
+      </li>
+    </ul>
+
+    <table>
+      <thead>
+        <tr>
+          <th><strong>Matcher (Podmínka Shody)</strong></th>
+          <th><strong>Popis</strong></th>
+          <th><strong>Příklad Použití</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong><code>route-filter</code></strong></td>
+          <td>Shoda na základě <strong>prefixu a délky masky</strong> (jak popsáno výše).</td>
+          <td><code>from route-filter 10.0.0.0/8 orlonger;</code></td>
+        </tr>
+        <tr>
+          <td><strong><code>protocol</code></strong></td>
+          <td>Shoda na základě <strong>zdrojového protokolu</strong>, ze kterého byla trasa přijata.</td>
+          <td><code>from protocol bgp;</code></td>
+        </tr>
+        <tr>
+          <td><strong><code>neighbor</code></strong></td>
+          <td>Shoda na základě <strong>IP adresy souseda</strong> (peer), od kterého byla trasa přijata.</td>
+          <td><code>from neighbor 1.1.1.1;</code></td>
+        </tr>
+        <tr>
+          <td><strong><code>community</code></strong></td>
+          <td>Shoda na základě <strong>hodnot BGP komunit</strong>.</td>
+          <td><code>from community CUST-A;</code></td>
+        </tr>
+        <tr>
+          <td><strong><code>as-path</code></strong></td>
+          <td>Shoda na základě <strong>regulárního výrazu v BGP AS cestě</strong>.</td>
+          <td><code>from as-path ".* 65000$";</code></td>
+        </tr>
+        <tr>
+          <td><strong><code>preference</code></strong></td>
+          <td>Shoda na základě <strong>hodnoty preference trasy</strong>.</td>
+          <td><code>from preference 100;</code></td>
+        </tr>
+        <tr>
+          <td><strong><code>prefix-list</code></strong></td>
+          <td>Odkazuje na <strong>předem definovaný seznam prefixů</strong>. Oproti route-filteru má omezenější možnosti
+            shody (pouze <code>exact</code> nebo shoda celého seznamu).</td>
+          <td><code>from prefix-list MOJE-SITE;</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+
+</html>
