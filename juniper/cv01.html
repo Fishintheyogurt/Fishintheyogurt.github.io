@@ -9,148 +9,156 @@
 </head>
 
 <body class="stackedit">
-  <div class="stackedit__html"><h1 id="cvičení">1. cvičení</h1>
-<h2 id="spuštění-vm-juniper-vsrx">Spuštění VM Juniper (vSRX)</h2>
-<p>a) Možnost správy přes okno VM (console)<br>
-b) Vzdálené přihlášení přes SSH nebo web (z hostitele na IP 192.168.56.91 [na Hyper-V 192.168.56.191])</p>
-<ul>
-<li>uživatelské účty: root/Juniper123 (lab/lab123)</li>
-</ul>
-<ol>
-<li>Po přihlášení jako root se nejprve zobrazí Unix/Linux interface</li>
-</ol>
-<pre class=" language-console"><code class="prism  language-console">
-root@vsrx1 %
+  <div class="stackedit__html">
+    <h1 id="cvičení">1. cvičení</h1>
+    <h2 id="spuštění-vm-juniper-vsrx">Spuštění VM Juniper (vSRX)</h2>
+    <p>a) Možnost správy přes okno VM (console)<br>
+      b) Vzdálenée přihlášení přes SSH nebo web (z hostitele na IP 192.168.56.91 [na Hyper-V 192.168.56.191])</p>
+    <ul>
+      <li>uživatelské účty: root/Juniper123 (lab/lab123)</li>
+    </ul>
+    <ol>
+      <li>Po přihlášení jako root se nejprve zobrazí Unix/Linux interface</li>
+    </ol>
+    <pre class=" language-console"><code class="prism  language-console">
+        root@vsrx1 %
 
-</code></pre>
-<ul>
-<li>popř. se místo % zobrazí #</li>
-<li>možné provádět Unix/Linux příkazy (ls, cp, cat,…)</li>
-</ul>
-<h2 id="operační-mód-na-začátku-řádku-">Operační mód (na začátku řádku &gt;)</h2>
-<h3 id="u-obyčejného-uživatele-se-objeví-rovnou">1. U obyčejného uživatele se objeví rovnou</h3>
-<ul>
-<li>U root je nejprve Unix interface a předchod je třeba:</li>
-</ul>
-<pre class=" language-console"><code class="prism  language-console">
-root@vsrx1 % cli 
-root@vrsrx1 &gt;
+      </code></pre>
+    <ul>
+      <li>popř. se místo % zobrazí #</li>
+      <li>možné provádět Unix/Linux příkazy (ls, cp, cat,…)</li>
+    </ul>
+    <h2 id="operační-mód-na-začátku-řádku-">Operační mód (na začátku řádku &gt;)</h2>
+    <h3 id="u-obyčejného-uživatele-se-objeví-rovnou">1. U obyčejného uživatele se objeví rovnou</h3>
+    <ul>
+      <li>U root je nejprve Unix interface a předchod je třeba:</li>
+    </ul>
+    <pre class=" language-console"><code class="prism  language-console">
+        root@vsrx1 % cli
+        root@vrsrx1 &gt;
 
-</code></pre>
-<h3 id="zobrazení-verze">2. Zobrazení verze</h3>
-<pre class=" language-console"><code class="prism  language-console">
-&gt; show system information
+      </code></pre>
+    <h3 id="zobrazení-verze">2. Zobrazení verze</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        &gt; show system information
 
-</code></pre>
-<h3 id="zobrazení-stavu-rozhraní">3. Zobrazení stavu rozhraní</h3>
-<pre class=" language-console"><code class="prism  language-console">
-&gt; show interfaces terse
+      </code></pre>
+    <h3 id="zobrazení-stavu-rozhraní">3. Zobrazení stavu rozhraní</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        &gt; show interfaces terse
 
-</code></pre>
-<ul>
-<li>fxp0 - rozhraní spojení přímo s hostitelem (host-only interface)</li>
-<li>ge-0/0/0 - připojeno do laboratorní sítě A (žlutá)</li>
-<li>ge-0/0/1 - připojeno do laboratorní sítě B (zelená)</li>
-<li>ge-0/0/2 - virtuální síť (spoj k Juniper 2 a Juniper 3)</li>
-</ul>
-<h2 id="konfigurační-mód-na-začátku-řádku--a-nad-řádkem-cesta-v-konfiguraciedit">Konfigurační mód (na začátku řádku # a nad řádkem cesta v konfiguraci[edit])</h2>
-<h3 id="přechod-do-konfiguračního-módu">1. Přechod do konfiguračního módu</h3>
-<pre class=" language-console"><code class="prism  language-console">
-root@vsrx1 &gt; configure
+      </code></pre>
+    <ul>
+      <li>fxp0 - rozhraní spojení přímo s hostitelem (host-only interface)</li>
+      <li>ge-0/0/0 - připojeno do laboratorní sítě A (žlutá)</li>
+      <li>ge-0/0/1 - připojeno do laboratorní sítě B (zelená)</li>
+      <li>ge-0/0/2 - virtuální síť (spoj k Juniper 2 a Juniper 3)</li>
+    </ul>
+    <h2 id="konfigurační-mód-na-začátku-řádku--a-nad-řádkem-cesta-v-konfiguraciedit">Konfigurační mód (na začátku řádku
+      # a nad řádkem cesta v konfiguraci[edit])</h2>
+    <h3 id="přechod-do-konfiguračního-módu">1. Přechod do konfiguračního módu</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        root@vsrx1 &gt; configure
 
-</code></pre>
-<h3 id="zobrazení-tzv.-kandidátské-kofigurace-připravovanánenasazená-konfigurace">2. Zobrazení tzv. kandidátské kofigurace (připravovaná/nenasazená konfigurace)</h3>
-<pre class=" language-console"><code class="prism  language-console">
-[edit]
-lab@vsrx1 # show
+      </code></pre>
+    <h3 id="zobrazení-tzv.-kandidátské-kofigurace-připravovanánenasazená-konfigurace">2. Zobrazení tzv. kandidátské
+      kofigurace (připravovaná/nenasazená konfigurace)</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        [edit]
+        lab@vsrx1 # show
 
-</code></pre>
-<h3 id="navigace-v-konfiguraci---zanoření-v-konfiguraci-nastavení-ip-adresy-a-návrat-na-top-level">3. Navigace v konfiguraci - zanoření v konfiguraci, nastavení IP adresy a návrat na top level</h3>
-<pre class=" language-console"><code class="prism  language-console">
-[edit] 
-lab@vsrx1 # edit interfaces
+      </code></pre>
+    <h3 id="navigace-v-konfiguraci---zanoření-v-konfiguraci-nastavení-ip-adresy-a-návrat-na-top-level">3. Navigace v
+      konfiguraci - zanoření v konfiguraci, nastavení IP adresy a návrat na top level</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        [edit]
+        lab@vsrx1 # edit interfaces
 
-[edit interfaces]
-lab@vsrx1# set ge-0/0/0 unit 0 family inet address 172.16.__.1/
+        [edit interfaces]
+        lab@vsrx1# set ge-0/0/0 unit 0 family inet address 172.16.__.1/
 
-[edit interfaces] 
-lab@vsrx1 # top
+        [edit interfaces]
+        lab@vsrx1 # top
 
-[edit]
-lab@vsrx1#
+        [edit]
+        lab@vsrx1#
 
-</code></pre>
-<h3 id="porovnání-kandidátské-a-aktuální-běžící-konfigurace">4. Porovnání kandidátské a aktuální běžící konfigurace</h3>
-<pre class=" language-console"><code class="prism  language-console">
-# show | compare
+      </code></pre>
+    <h3 id="porovnání-kandidátské-a-aktuální-běžící-konfigurace">4. Porovnání kandidátské a aktuální běžící konfigurace
+    </h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        # show | compare
 
-</code></pre>
-<h3 id="aplikování-konfigurace---commit">5. Aplikování konfigurace - commit</h3>
-<pre class=" language-console"><code class="prism  language-console">
-# commit
+      </code></pre>
+    <h3 id="aplikování-konfigurace---commit">5. Aplikování konfigurace - commit</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        # commit
 
-</code></pre>
-<h3 id="zobrazení-nastavených-ip-adres-spuštění-příkazu-z-operačního-režimu-v-konfiguračním">6. Zobrazení nastavených IP adres, spuštění příkazu z operačního režimu v konfiguračním</h3>
-<pre class=" language-console"><code class="prism  language-console">
-# run show interfaces terse
+      </code></pre>
+    <h3 id="zobrazení-nastavených-ip-adres-spuštění-příkazu-z-operačního-režimu-v-konfiguračním">6. Zobrazení
+      nastavených IP adres, spuštění příkazu z operačního režimu v konfiguračním</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        # run show interfaces terse
 
-</code></pre>
-<h3 id="ověření-funkčnosti-konfigurace">7. Ověření funkčnosti konfigurace</h3>
-<pre class=" language-console"><code class="prism  language-console">
-# run ping 172.16.__.
+      </code></pre>
+    <h3 id="ověření-funkčnosti-konfigurace">7. Ověření funkčnosti konfigurace</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        # run ping 172.16.__.
 
-</code></pre>
-<h3 id="nastavení-ip-adresy-na-druhé-rozhraní">8. Nastavení IP adresy na druhé rozhraní</h3>
-<pre class=" language-console"><code class="prism  language-console">
-# set interfaces ge-0/0/1 unit 0 family inet address 172.16.0.__/
+      </code></pre>
+    <h3 id="nastavení-ip-adresy-na-druhé-rozhraní">8. Nastavení IP adresy na druhé rozhraní</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        # set interfaces ge-0/0/1 unit 0 family inet address 172.16.0.__/
 
-</code></pre>
-<h3 id="zobrazení-kandidátské-konfigurace-v-podobě-příkazů">9. Zobrazení kandidátské konfigurace v podobě příkazů</h3>
-<pre class=" language-console"><code class="prism  language-console">
-# lab@vsrx1# show | display set
+      </code></pre>
+    <h3 id="zobrazení-kandidátské-konfigurace-v-podobě-příkazů">9. Zobrazení kandidátské konfigurace v podobě příkazů
+    </h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        # lab@vsrx1# show | display set
 
-</code></pre>
-<h3 id="potvrzovaný-comit---nutné-vložit-do-1-minuty-znovu-commit-jinak-se-vrátí-na-předchozí-konfiguraci">10. Potvrzovaný comit - nutné vložit do 1 minuty znovu commit, jinak se vrátí na předchozí konfiguraci</h3>
-<pre class=" language-console"><code class="prism  language-console">
-# commit confirmed 1
-# commit
+      </code></pre>
+    <h3 id="potvrzovaný-comit---nutné-vložit-do-1-minuty-znovu-commit-jinak-se-vrátí-na-předchozí-konfiguraci">10.
+      Potvrzovaný comit - nutné vložit do 1 minuty znovu commit, jinak se vrátí na předchozí konfiguraci</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        # commit confirmed 1
+        # commit
 
-</code></pre>
-<h3 id="nastavit-route-k-sousedovi">11. Nastavit route k sousedovi</h3>
-<pre class=" language-console"><code class="prism  language-console">
-# set routing-options static route 172.16.__.0/24 next-hop 172.16.0.__ 
-# commit and-quit
+      </code></pre>
+    <h3 id="nastavit-route-k-sousedovi">11. Nastavit route k sousedovi</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        # set routing-options static route 172.16.__.0/24 next-hop 172.16.0.__
+        # commit and-quit
 
-</code></pre>
-<h3 id="zobrazení-směrovací-tabulky">12. Zobrazení směrovací tabulky</h3>
-<pre class=" language-console"><code class="prism  language-console">
-&gt; show route
+      </code></pre>
+    <h3 id="zobrazení-směrovací-tabulky">12. Zobrazení směrovací tabulky</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        &gt; show route
 
-</code></pre>
-<h2 id="zálohy-a-obnovení-configurace">Zálohy a obnovení configurace</h2>
-<h3 id="výpis-historie-commitů">1. Výpis historie commitů</h3>
-<pre class=" language-console"><code class="prism  language-console">
-&gt; show system commit
+      </code></pre>
+    <h2 id="zálohy-a-obnovení-configurace">Zálohy a obnovení configurace</h2>
+    <h3 id="výpis-historie-commitů">1. Výpis historie commitů</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        &gt; show system commit
 
-</code></pre>
-<h3 id="porovnání-konfigurací">2. Porovnání konfigurací</h3>
-<pre class=" language-console"><code class="prism  language-console">
-&gt; configure 
-# delete interfaces
-# show | compare
+      </code></pre>
+    <h3 id="porovnání-konfigurací">2. Porovnání konfigurací</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        &gt; configure
+        # delete interfaces
+        # show | compare
 
-</code></pre>
-<h3 id="načtení-aktuální-běžící-konfigurace">3. Načtení aktuální běžící konfigurace</h3>
-<pre class=" language-console"><code class="prism  language-console">
-# rollback
+      </code></pre>
+    <h3 id="načtení-aktuální-běžící-konfigurace">3. Načtení aktuální běžící konfigurace</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        # rollback
 
-</code></pre>
-<h3 id="nahrazení-textu-v-konfiguraci-jiným-textem">4. Nahrazení textu v konfiguraci jiným textem</h3>
-<pre class=" language-console"><code class="prism  language-console">
-# replace pattern "172.16" with "192.168"
+      </code></pre>
+    <h3 id="nahrazení-textu-v-konfiguraci-jiným-textem">4. Nahrazení textu v konfiguraci jiným textem</h3>
+    <pre class=" language-console"><code class="prism  language-console">
+        # replace pattern "172.16" with "192.168"
 
-</code></pre>
-</div>
+      </code></pre>
+  </div>
 </body>
 
 </html>
