@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="../styly.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="cvičení">4. cvičení</h1>
+<h2 id="nastavení-virtuálního-juniper-z-factory-default">Nastavení virtuálního Juniper z factory-default</h2>
+<h3 id="resetujte-juniper-1-do-továrního-nastavení">1. Resetujte Juniper 1 do továrního nastavení</h3>
+<h3 id="nastavte-heslo-pro-uživatele-root">2. Nastavte heslo pro uživatele root</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set system root-authentication plain-text-password
+
+</code></pre>
+<h3 id="zobrazte-si-výchozí-konfiguraci-a-prohlédněte-si-části-které-jsou-její-součástí">3. Zobrazte si výchozí konfiguraci a prohlédněte si části, které jsou její součástí</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# show
+
+</code></pre>
+<h3 id="smažte-celou-větev-security---detailnímu-nastavení-této-části-se-budeme-věnovat-v-pozdějších-cvičeních">4. Smažte celou větev security - detailnímu nastavení této části se budeme věnovat v pozdějších cvičeních</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# delete security
+
+</code></pre>
+<h3 id="nastavte-mód-forwardování-na-packet-based---u-verze-25-je-family-inet-u-starších-mpls">5. Nastavte mód forwardování na packet-based - u verze 25 je family inet, u starších mpls</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set security forwarding-options family inet mode packet-based
+
+</code></pre>
+<p>následně proveďte zprávy commit, možná bude třeba také rebootovat - dle zobrazené systémové</p>
+<h3 id="doplňte-nastavení-ip-adres-popř.-směrování-def.-route-přes-fyzický-juniper">6. Doplňte nastavení IP adres, popř. směrování (def. route přes fyzický Juniper)</h3>
+<h3 id="nastavte-ip-adresy-a-výchozí-brány-na-koncových-zařízeních">7. Nastavte IP adresy a výchozí brány na koncových zařízeních</h3>
+<h3 id="vyzkoušejte-komunikaci-mezi-pc">8. Vyzkoušejte komunikaci mezi PC</h3>
+<h2 id="nastavení-fyzického-srx-ex">Nastavení fyzického SRX (EX)</h2>
+<h3 id="password-recovery-v-případě-potřeby">0. Password recovery (v případě potřeby)</h3>
+<p><a href="https://www.juniper.net/documentation/us/en/software/junos/user-access/topics/topic-map/recovering-root-password.html">https://www.juniper.net/documentation/us/en/software/junos/user-access/topics/topic-map/recovering-root-password.html</a></p>
+<h3 id="reboot">1. Reboot</h3>
+<h3 id="stisknout-mezerník-když-bootuje-a-objeví-se">2. Stisknout mezerník když bootuje a objeví se:</h3>
+<pre class=" language-console"><code class="prism  language-console">
+Hit [Enter] to boot immediately, or space bar for command prompt.Booting [kernel] in 9 seconds...
+
+</code></pre>
+<h3 id="zadat">3. Zadat:</h3>
+<pre class=" language-console"><code class="prism  language-console">
+boot -s
+
+</code></pre>
+<h3 id="zadat-1">4. Zadat:</h3>
+<pre class=" language-console"><code class="prism  language-console">
+recovery
+
+</code></pre>
+<h3 id="resetujte-do-factory-default">1. Resetujte do factory-default</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# load factory-default
+
+</code></pre>
+<h3 id="nastavte-heslo-roota---juniper123">2. Nastavte heslo roota - “Juniper123”</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set system root-authentication plain-text-password 
+# commit
+
+</code></pre>
+<h3 id="vymažte-zbytečné-větve-konfigurace">3. Vymažte zbytečné větve konfigurace</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# delete security 
+# delete ...
+
+</code></pre>
+<h3 id="odeberte-nastavení-ethernet-switchnig-na-všech-rozhraních">4. Odeberte nastavení ethernet-switchnig na všech rozhraních</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# delete interfaces ge-0/0/1 unit 0 family ethernet-switching 
+# ...
+
+</code></pre>
+<h3 id="nastavte-mód-přepínání-paketů-poté-může-být-potřeba-restart">5. Nastavte mód přepínání paketů (poté může být potřeba restart)</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set security forwarding-options family mpls mode packet-based
+
+</code></pre>
+<h3 id="obdobně-jako-na-virtuálním-nastavte-ip-adresy-a-statické-směrování">6. Obdobně jako na virtuálním nastavte IP adresy a statické směrování</h3>
+<h2 id="nastavení-port-channel">Nastavení port-channel</h2>
+<h3 id="nastavení-single-chassis">1. Nastavení single chassis</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set chassis aggregated-devices ethernet device-count 1
+
+</code></pre>
+<h3 id="nastavení-lacp-protokolu-pro-ae0-rozhraní">2. Nastavení LACP protokolu pro ae0 rozhraní</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces ae0 aggregated-ether-options lacp active
+
+</code></pre>
+<h3 id="zařezaní-rozhraní-do-port-channel">3. Zařezaní rozhraní do port-channel</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces &lt;interface&gt; ether-options 802.3ad ae
+
+</code></pre>
+<h3 id="commit-a-zobrazení-stavu-lacp">4. Commit a zobrazení stavu LACP</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# commit and-quit 
+&gt; show lacp interfaces (^)
+
+</code></pre>
+<h2 id="nastavení-vlan-accesstrunk-portů">Nastavení VLAN, access/trunk portů</h2>
+<h3 id="vytvoření-vlan">1. Vytvoření VLAN</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set vlans &lt;VLAN name&gt; vlan-id &lt;VLAN number&gt; 
+# set vlans &lt;VLAN name&gt; description &lt;text info&gt;
+
+</code></pre>
+<h3 id="nastavení-módu-rozhraní-accesstrunk-u-srx">2. Nastavení módu rozhraní access/trunk u SRX</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces &lt;interface name&gt; unit 0 family ethernet-switchinginterface-mode &lt;access/trunk&gt;
+
+</code></pre>
+<h3 id="nastavení-módu-rozhraní-accesstrunk-u-ex">3. Nastavení módu rozhraní access/trunk u EX</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces &lt;interface name&gt; unit 0 family ethernet-switching port-mode &lt;access/trunk&gt;
+
+</code></pre>
+<h3 id="nastavení-vlan-na-rozhraní">4. Nastavení VLAN na rozhraní</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces &lt;interface name&gt; unit 0 family ethernet-switching vlanmembers &lt;VLAN ID&gt;
+
+</code></pre>
+<h2 id="nastavení-l3-rozhraní-pro-vlan-na-fyzickém-srx">Nastavení L3 rozhraní pro VLAN na fyzickém SRX</h2>
+<h3 id="vytvoření-l3-rozhraní">1. Vytvoření L3 rozhraní</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces irb unit &lt;number&gt; family inet address &lt;IP address&gt;/&lt;prefixlength&gt;
+
+</code></pre>
+<h3 id="přidání-l3-rozhraní-k-vlan">2. Přidání L3 rozhraní k VLAN</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set vlans &lt;VLAN name&gt; l3-interface irb.&lt;number&gt;
+
+</code></pre>
+<h2 id="nastavení-l3-rozhraní-pro-vlan-na-fyzickém-ex-nebo-srx">Nastavení L3 rozhraní pro VLAN na fyzickém EX nebo SRX</h2>
+<h3 id="vytvoření-l3-rozhraní-1">1. Vytvoření L3 rozhraní</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces vlan unit &lt;number&gt; family inet address &lt;IPaddress&gt;/&lt;prefix 
+length&gt;
+
+</code></pre>
+<h3 id="přidání-l3-rozhraní-k-vlan-1">2. Přidání L3 rozhraní k VLAN</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set vlans &lt;VLAN name&gt; l3-interface vlan.&lt;number&gt;
+
+</code></pre>
+</div>
+</body>
+
+</html>

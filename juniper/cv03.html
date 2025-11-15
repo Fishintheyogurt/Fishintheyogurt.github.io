@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="../styly.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="cvičení">3. cvičení</h1>
+<h2 id="nastavení-vlan-accesstrunk-portů">Nastavení VLAN, access/trunk portů</h2>
+<h3 id="vytvoření-vlan">1. Vytvoření VLAN</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set vlans &lt;VLAN name&gt; vlan-id &lt;VLAN number&gt; 
+# set vlans &lt;VLAN name&gt; description &lt;text info&gt;
+
+</code></pre>
+<h3 id="nastavení-módu-rozhraní-accesstrunk">2. Nastavení módu rozhraní access/trunk</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces &lt;interface name&gt; unit 0 family ethernet-switching interface-mode &lt;access/trunk&gt;
+
+</code></pre>
+<h3 id="nastavení-vlan-na-rozhraní">3. Nastavení VLAN na rozhraní</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces &lt;interface name&gt; unit 0 family ethernet-switching vlan members &lt;VLAN ID&gt;
+
+</code></pre>
+<h3 id="vypnutí-linky-mezi-juniper-2-a-juniper-3-tvořila-by-smyčku-a-také-ge-00">4. Vypnutí linky mezi Juniper 2 a Juniper 3 (tvořila by smyčku) a také ge-0/0/</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces ge-0/0/0 disable
+# set interfaces ge-0/0/1 disable
+
+</code></pre>
+<h3 id="commit-a-restart-pro-změnu-typu-rozhraní">5. Commit a restart pro změnu typu rozhraní</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# commit and-quit 
+&gt; request system reboot
+
+</code></pre>
+<h3 id="výpis-informací-o-vlan-a-transparent-bridge-módu">6. Výpis informací o VLAN a transparent bridge módu</h3>
+<pre class=" language-console"><code class="prism  language-console">
+&gt; show interfaces terse 
+&gt; show vlans
+&gt; show vlans sort-by-tag 
+&gt; show ethernet-switching global-information
+
+</code></pre>
+<h3 id="zobrazení-cam-tabulky">7. Zobrazení CAM tabulky</h3>
+<pre class=" language-console"><code class="prism  language-console">
+&gt; show ethernet-switching table brief
+
+</code></pre>
+<h2 id="nastavení-l3-rozhraní-pro-vlan">Nastavení L3 rozhraní pro VLAN</h2>
+<h3 id="vytvoření-l3-rozhraní">1. Vytvoření L3 rozhraní</h3>
+<pre class=" language-console"><code class="prism  language-console"># set interfaces irb unit &lt;number&gt; family inet address &lt;IP address&gt;/&lt;prefixlength&gt;
+
+</code></pre>
+<h3 id="přidání-l3-rozhraní-k-vlan">2. Přidání L3 rozhraní k VLAN</h3>
+<pre class=" language-console"><code class="prism  language-console"># set vlans &lt;VLAN name&gt; l3-interface irb.&lt;number&gt;
+
+</code></pre>
+<h3 id="nastavení-ip-adresy-na-počítače">3. Nastavení IP adresy na počítače</h3>
+<h3 id="ověření-komunikace-v-rámci-sítě">4. Ověření komunikace v rámci sítě</h3>
+<h2 id="nastavení-vrrp">Nastavení VRRP</h2>
+<h3 id="nastavení-sdílené-virtuální-adresy-a-použití-ip-pro-data">1. Nastavení sdílené virtuální adresy a použití IP pro data</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# edit interfaces irb unit &lt;number&gt; family inet address &lt;IPaddress&gt;/&lt;prefix length&gt;
+
+[edit interfaces irb unit &lt;number&gt; family inet address &lt;IP address&gt;/&lt;prefix length&gt;]
+# set vrrp-group &lt;VRRP group number&gt; virtual-address &lt;virtual IP&gt;
+
+[edit interfaces irb unit &lt;number&gt; family inet address &lt;IP address&gt;/&lt;prefix length&gt;] 
+# set vrrp-group &lt;VRRP group number&gt; accept-data
+
+</code></pre>
+<h3 id="nastavení-priority">2. Nastavení priority</h3>
+<pre class=" language-console"><code class="prism  language-console">
+[edit interfaces irb unit &lt;number&gt; family inet address &lt;IP address&gt;/&lt;prefixlength&gt;]
+# set vrrp-group &lt;VRRP group number&gt; priority &lt;priority&gt;
+
+[edit interfaces irb unit &lt;number&gt; family inet address &lt;IP address&gt;/&lt;prefixlength&gt;]
+# top
+
+[edit] 
+# commit and-quit
+
+</code></pre>
+<h3 id="ověření-nastavení-vrrp">3. Ověření nastavení VRRP</h3>
+<pre class=" language-console"><code class="prism  language-console">
+&gt; show vrrp 
+&gt; show interfaces terse
+&gt; show route
+
+</code></pre>
+<h3 id="ověření-komunikace-mezi-pc">4. Ověření komunikace mezi PC</h3>
+<h3 id="vyzkoušejte-vypnout-rozhraní-ge-002-u-juniper-2-nebo-juniper-3---dojde-k-přesunu-aktivní-gw-na-druhý">5. Vyzkoušejte vypnout rozhraní ge-0/0/2 u Juniper 2 nebo Juniper 3 - dojde k přesunu aktivní GW na druhý</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interface ge-0/0/2 disable 
+# commit and-quit
+&gt; show vrrp
+
+</code></pre>
+<ul>
+<li>provoz mezi stroji se bohužel nepřepne hned ale až za cca 5 minut (nejspíše způsobuje dlouhý timeout přepínací tabulky ve VirtualBox)</li>
+</ul>
+<h2 id="nastavení-lldp">Nastavení LLDP</h2>
+<h3 id="zapnutí-lldp-na-všech-rozhraních">1. Zapnutí LLDP na všech rozhraních</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set protocols lldp interface all 
+# commit and-quit
+
+</code></pre>
+<h3 id="výpis-sousedních-rozhraní">2. Výpis sousedních rozhraní</h3>
+<pre class=" language-console"><code class="prism  language-console">
+&gt; show lldp neighbors
+
+</code></pre>
+</div>
+</body>
+
+</html>

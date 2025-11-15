@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="../styly.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="cvičení">2. cvičení</h1>
+<h2 id="nastavení-ip-adres-a-směrování">Nastavení IP adres a směrování</h2>
+<h3 id="nastavte-ip-adresy-dle-topologie-na-juniper-1-a-juniper-3">1. Nastavte IP adresy dle topologie na Juniper 1 a Juniper 3</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces ge-0/0/&lt;x&gt; unit 0 family inet address &lt;IP addres&gt;/&lt;prefixlength&gt;  
+
+</code></pre>
+<h3 id="nastavte-statické-směrování-mezi-sítěmi">2. Nastavte statické směrování mezi sítěmi</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set routing-options static route &lt;dst. network&gt;/&lt;prefix length&gt; next-hop &lt;IP address of next-hop&gt;  
+
+</code></pre>
+<ul>
+<li>nezapomeňte provést commit</li>
+</ul>
+<h3 id="zkontrolujte-aplikaci-nastavení---adresy-route">3. Zkontrolujte aplikaci nastavení - adresy, route</h3>
+<pre class=" language-console"><code class="prism  language-console">
+&gt; show interfaces terse &gt; show route  
+
+</code></pre>
+<h3 id="nastavte-ip-adresy-a-výchozí-brány-na-koncových-zařízeních">4. Nastavte IP adresy a výchozí brány na koncových zařízeních</h3>
+<h3 id="vyzkoušejte-komunikaci-mezi-pc">5. Vyzkoušejte komunikaci mezi PC</h3>
+<h2 id="systémová-nastavení">Systémová nastavení</h2>
+<h3 id="název-zařízení">1. Název zařízení</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set system host-name ROUTER  
+
+</code></pre>
+<h3 id="nastavení-doménového-jména">2. Nastavení doménového jména</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set system domain-name mendelu.lab  
+
+</code></pre>
+<h3 id="název-časové-zóny-a-aktuálního-času">3. Název časové zóny a aktuálního času</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set system time-zone Europe/Prague &gt; set date 202509301550.  
+
+</code></pre>
+<h3 id="nastavení-úvodní-zprávy">4. Nastavení úvodní zprávy</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set system login message "Pozor toto je muj router!"  
+
+</code></pre>
+<h3 id="omezení-přístupu-na-sshweb">5. Omezení přístupu na SSH/web</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# delete system services web-management http interface  
+
+</code></pre>
+<ul>
+<li>vyzkoušet web rozhraníodebrat telnet</li>
+</ul>
+<h2 id="nastavení-uživatelů">Nastavení uživatelů</h2>
+<h3 id="uložení-hesel">1. Uložení hesel</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# show system root-authentication  
+
+</code></pre>
+<h3 id="změna-hesla">2. Změna hesla</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set system root-authentication plain-text-password  
+
+</code></pre>
+<h3 id="vytvoření-nového-uživatele">3. Vytvoření nového uživatele</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set system login user &lt;username&gt; authentication plain-text-password  
+
+</code></pre>
+<h3 id="vytvoření-nové-skupiny-oprávnění">4. Vytvoření nové skupiny oprávnění</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set system login class &lt;groupname&gt; permissions? 
+# set system login class &lt;groupname&gt; allow-commands?  
+# set system login class &lt;groupname&gt; deny-configuration? 
+# set system login user &lt;username&gt; class &lt;groupname&gt;  
+# commit  
+
+
+</code></pre>
+<h3 id="nastavení-oprávnění-nového-uživatele-které-umožní">5. Nastavení oprávnění nového uživatele, které umožní:</h3>
+<ul>
+<li>zobrazení všech stavových informací (show příkazy)</li>
+<li>zobrazení a změna konfigurace rozhraní</li>
+<li>zobrazení konfigurace v části systém</li>
+<li>možnost měnit host-name</li>
+<li>zákaz změny konfigurace rozhraní fxp0</li>
+<li>další oprávnění budou maximálně omezena</li>
+</ul>
+<h2 id="řízení-přihlášených-uživatelů">Řízení přihlášených uživatelů</h2>
+<h3 id="vynucení-odhlášení-uživatele">1. Vynucení odhlášení uživatele</h3>
+<pre class=" language-console"><code class="prism  language-console">
+&gt; request system logout user user
+
+</code></pre>
+<h3 id="uzamknutí-konfigurace">2. Uzamknutí konfigurace</h3>
+<pre class=" language-console"><code class="prism  language-console">
+&gt; configure exclusive  
+
+</code></pre>
+<h2 id="vypnutí-rozhraní-komentář-zakomentování-části-konfigurace">Vypnutí rozhraní, komentář, zakomentování části konfigurace</h2>
+<h3 id="vypnutí-rozhraní">1. Vypnutí rozhraní</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set interfaces ge-0/0/0 unit 0 disable  
+
+</code></pre>
+<h3 id="zakomentování-dočasné-vypnutí-části-konfigurace">2. Zakomentování (dočasné vypnutí) části konfigurace</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# edit interfaces
+# deactivate ge-0/0/  
+# top
+# commit and-quit  
+&gt; show interfaces terse
+&gt; show configuration  
+
+</code></pre>
+<ul>
+<li>pro opravu :</li>
+</ul>
+<pre class=" language-console"><code class="prism  language-console">
+# activate interfaces ge-0/0/  
+
+</code></pre>
+<h3 id="komentář-k-části-konfigurace">3. Komentář k části konfigurace</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# annotate system "toto jsou systemova nastaveni" 
+# edit interfaces fxp0 unit 0 family inet
+# annotate address 192.168.56.91/24 "toto je mgmt adresa"
+# top 
+# show
+
+</code></pre>
+<h2 id="záloha-konfigurace">Záloha konfigurace</h2>
+<h3 id="rescue-konfigurace">1. Rescue konfigurace</h3>
+<pre class=" language-console"><code class="prism  language-console">
+&gt; show system configuration rescue 
+&gt; request system configuration rescue save  
+
+</code></pre>
+<h3 id="přepis-konfigurace-vložené-do-terminálu">2. Přepis konfigurace vložené do terminálu</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# load override terminal relative  
+
+</code></pre>
+<h3 id="spojení-konfigurací">3. Spojení konfigurací</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# load merge terminal relative 
+# load update terminal relative
+
+</code></pre>
+<h3 id="uložení-konfigurace-a-její-kopie">4. Uložení konfigurace a její kopie</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# save zaloha.cfg 
+&gt; file list  
+&gt; file show zaloha.cfg 
+&gt; scp zaloha.cfg root@192.168.0.10:~/
+
+</code></pre>
+<h2 id="autentizace-přes-radius-server">Autentizace přes Radius server</h2>
+<h3 id="nastavení-autentizace-na-juniper-přes-radius">1. Nastavení autentizace na Juniper přes Radius</h3>
+<pre class=" language-console"><code class="prism  language-console">
+# set system radius-server 192.168.0.10 secret heslo-juniper 
+# set system authentication-order [ radius password ]  
+# set system login user RadiusSkupina class operator 
+# commit  
+
+</code></pre>
+<h3 id="přidat-autentizaci-juniperu-pro-použití-radius-serveru">2. Přidat autentizaci Juniperu pro použití Radius serveru</h3>
+<pre class=" language-console"><code class="prism  language-console">
+vi /etc/raddb/clients.conf  
+
+client juniper { 
+	ipaddr = 192.168.0.0/  
+	secret = heslo-juniper
+}
+
+</code></pre>
+<h3 id="přidat-uživatele-kteří-budou-ověřován-radius-serverem">3. Přidat uživatele, kteří budou ověřován Radius serverem</h3>
+<pre class=" language-console"><code class="prism  language-console">
+vi /etc/raddb/users  
+
+user Cleartext-Password := "password"
+	 Juniper-Local-User-Name := "RadiusSkupina"  
+
+</code></pre>
+<h3 id="vypnout-službu-fw">4. Vypnout službu FW</h3>
+<pre class=" language-bash"><code class="prism  language-bash">
+systemctl stop iptables
+
+</code></pre>
+<h3 id="spustit-službu-radius">5. Spustit službu Radius</h3>
+<ul>
+<li>interaktivní režim</li>
+</ul>
+<pre class=" language-console"><code class="prism  language-console">
+radiusd -X  
+
+</code></pre>
+<ul>
+<li>spuštění jako služba</li>
+</ul>
+<pre class=" language-bash"><code class="prism  language-bash">
+systemctl start radiusd  
+
+
+</code></pre>
+<h3 id="pokus-o-přihlášení-přes-ssh-účtem-z-radius">6. Pokus o přihlášení přes SSH účtem z Radius</h3>
+<h2 id="nápověda">Nápověda</h2>
+<h3 id="příkazy-pro-získání-nápovědy">1. Příkazy pro získání nápovědy</h3>
+<pre class=" language-console"><code class="prism  language-console">
+&gt; help aporpos host-name 
+&gt; help reference system host-name  
+&gt; help topic system host-name
+
+</code></pre>
+</div>
+</body>
+
+</html>

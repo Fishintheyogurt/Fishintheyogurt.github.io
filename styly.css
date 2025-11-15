@@ -1,0 +1,194 @@
+/* Catppuccin Macchiato Color Palette */
+:root {
+  /* Macchiato Base Colors */
+  --ctp-crust: #181926;
+  --ctp-mantle: #202028;
+  --ctp-base: #24273a;
+  
+  /* Surface and Overlay */
+  --ctp-surface0: #363a4f;
+  --ctp-surface1: #494d64;
+  --ctp-surface2: #5b6078;
+  --ctp-overlay0: #6e738d;
+  --ctp-overlay1: #8087a2;
+  --ctp-overlay2: #939ab7;
+  
+  /* Text and Subtext */
+  --ctp-subtext0: #a5adcb;
+  --ctp-subtext1: #b8c0e0;
+  --ctp-text: #cad3f5;
+  
+  /* Accent Colors */
+  --ctp-rosewater: #f4dbd6;
+  --ctp-flamingo: #f0c6c6;
+  --ctp-pink: #f5bde6;
+  --ctp-mauve: #c6a0f6;
+  --ctp-red: #ed8796;
+  --ctp-maroon: #ee99a0;
+  --ctp-peach: #f5a97f;
+  --ctp-yellow: #eed49f;
+  --ctp-green: #a6da95;
+  --ctp-teal: #8bd5ca;
+  --ctp-sky: #91d7e3;
+  --ctp-sapphire: #7dc4e4;
+  --ctp-blue: #8aadf4;
+  --ctp-lavender: #b7bdf8;
+}
+
+/* Reset a základní nastavení pro Catppuccin Macchiato */
+body.stackedit {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+  color: var(--ctp-text);
+  background-color: var(--ctp-base); /* Základní pozadí stránky */
+  line-height: 1.6;
+  padding: 20px;
+  margin: 0;
+}
+
+.stackedit__html {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--ctp-mantle); /* Tmavší plocha pro obsah */
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Nadpisy */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--ctp-lavender); /* Zvýrazněná barva pro nadpisy */
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid var(--ctp-surface1); /* Jemná oddělovací linka */
+  padding-bottom: 0.2em;
+}
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.6em; color: var(--ctp-blue); border-bottom-color: var(--ctp-surface2); }
+h3 { font-size: 1.3em; color: var(--ctp-sky); }
+
+/* Seznamy */
+ul, ol {
+  margin-left: 25px;
+  padding-left: 0;
+}
+li {
+  margin-bottom: 0.5em;
+}
+
+/* Code bloky (konzole) */
+pre {
+  background-color: var(--ctp-crust); /* Nejtmavší pozadí pro code bloky */
+  color: var(--ctp-flamingo); /* Zelená pro text konzole */
+  padding: 15px;
+  border-radius: 6px;
+  overflow-x: auto;
+  border: 1px solid var(--ctp-surface1);
+}
+
+code {
+  font-family: 'Fira Code', 'Cascadia Mono', monospace;
+}
+
+/* Inline kód */
+:not(pre) > code {
+  background-color: var(--ctp-surface0); /* Světlejší pozadí pro inline kód */
+  color: var(--ctp-yellow); /* Jiná barva pro odlišení */
+  padding: 0.2em 0.4em;
+  margin: 0 2px;
+  border-radius: 3px;
+}
+
+/* Zvýraznění */
+strong {
+  color: var(--ctp-red); 
+}
+
+/* Vodorovné linky */
+hr {
+  border: 0;
+  height: 1px;
+  background-color: var(--ctp-surface1);
+  margin: 20px 0;
+}
+
+/* Ostatní prvky specifické pro váš obsah */
+pre.language-console:before {
+  content: "Console";
+  color: var(--ctp-blue);
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+pre.language-bash:before {
+  content: "Bash";
+  color: var(--ctp-blue);
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+pre.language-json:before {
+  content: "JSON";
+  color: var(--ctp-blue);
+  display: block;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+a {
+  text-decoration: none;
+  color: var(--ctp-flamingo);
+  
+}
+
+a:hover {
+  color: var(--ctp-peach);
+}
+
+#index {
+  text-align: center;
+}
+
+/*table, th, td {
+  border: 1px solid black;
+  padding: 10px;
+  border-collapse: collapse;
+  border-color: var(--ctp-lavender);
+  
+}*/
+
+table {
+    border-collapse:separate;
+    border:solid black 2px;
+    border-radius:6px;
+    border-color: var(--ctp-surface1);
+}
+
+td, th {
+    border-left:solid black 2px;
+    border-top:solid black 2px;
+    border-color: var(--ctp-surface1);
+}
+
+th {
+    
+    border-top: none;
+    border-color: var(--ctp-surface1);
+}
+
+td:first-child, th:first-child {
+     border-left: none;
+     border-color: var(--ctp-surface1);
+}
+
+.nadpis_tabulky {
+  font-size: 1.6em; 
+  color: var(--ctp-blue);
+  border-bottom: 0px;
+  text-align: center;
+}
