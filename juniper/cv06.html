@@ -1,138 +1,136 @@
-﻿<!DOCTYPE html>
-<html>
 
+<!DOCTYPE html>
+<html lang="cs">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Welcome file</title>
-	<link rel="stylesheet" href="../styly.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>6. cvičení.md</title>
+    <link rel="stylesheet" href="../skola/druhak/web/styly.css">
 </head>
-
 <body class="stackedit">
-	<div class="stackedit__html">
-		<h2 id="loopback">Loopback</h2>
-		<pre class=" language-console"><code class="prism  language-console"># set interfaces lo0 unit 0 family inet address &lt;address&gt;/&lt;mask&gt;
+    <div class="stackedit__html">
+        <h2>Loopback</h2>
+<pre><code class="language-console"># set interfaces lo0 unit 0 family inet address &lt;address&gt;/&lt;mask&gt;
 </code></pre>
-		<h2 id="asn---autonomous-system-number">ASN - Autonomous System Number</h2>
-		<pre class=" language-console"><code class="prism  language-console"># set routing-options autonomous-system &lt;as-number&gt;
+<h2>ASN - Autonomous System Number</h2>
+<pre><code class="language-console"># set routing-options autonomous-system &lt;as-number&gt;
 </code></pre>
-		<h2 id="router-id">Router-ID</h2>
-		<pre class=" language-console"><code class="prism  language-console"># set routing-options router-id &lt;router-id&gt;
+<h2>Router-ID</h2>
+<pre><code class="language-console"># set routing-options router-id &lt;router-id&gt;
 </code></pre>
-		<h2 id="ospf">OSPF</h2>
-		<pre class=" language-console"><code class="prism  language-console"># set protocols ospf area &lt;ospf-area&gt; interface &lt;interface-name&gt; &lt;passive&gt;
+<h2>OSPF</h2>
+<pre><code class="language-console"># set protocols ospf area &lt;ospf-area&gt; interface &lt;interface-name&gt; &lt;passive&gt;
 </code></pre>
-		<ul>
-			<li>Passive nastavujeme na porty, kam nechceme posílat Hello pakety, např. na loopbacky</li>
-		</ul>
-		<h3 id="diagnostické-příkazy">Diagnostické příkazy</h3>
-		<pre class=" language-console"><code class="prism  language-console">show ospf overview
+<ul>
+<li>Passive nastavujeme na porty, kam nechceme posílat Hello pakety, např. na loopbacky</li>
+</ul>
+<h3>Diagnostické příkazy</h3>
+<pre><code class="language-console">show ospf overview
 show ospf neighbor
 show ospf route
 </code></pre>
-		<h2 id="bgp">BGP</h2>
-		<pre class=" language-console"><code class="prism  language-console"># set protocols bgp group &lt;group-name&gt; type &lt;type&gt;
+<h2>BGP</h2>
+<pre><code class="language-console"># set protocols bgp group &lt;group-name&gt; type &lt;type&gt;
 </code></pre>
-		<ul>
-			<li>type: interní a externí</li>
-		</ul>
-		<pre class=" language-console"><code class="prism  language-console"># set protocols bgp group &lt;group-name&gt; peer-as &lt;asn&gt;
+<ul>
+<li>type: interní a externí</li>
+</ul>
+<pre><code class="language-console"># set protocols bgp group &lt;group-name&gt; peer-as &lt;asn&gt;
 # set protocols bgp group &lt;group-name&gt; neighbor &lt;neighbor&gt;
 </code></pre>
-		<ul>
-			<li>neighbor je IP adresa vedlejšího routeru</li>
-			<li>např. na Juniper2 bude tato adresa 192.168.1.1 pro router ISP1, viz obrázek</li>
-			<li>![[topology.png]]</li>
-		</ul>
-		<pre class=" language-console"><code class="prism  language-console">set protocols bgp group &lt;group-name&gt; local-address &lt;address&gt;
+<ul>
+<li>neighbor je IP adresa vedlejšího routeru</li>
+<li>např. na Juniper2 bude tato adresa 192.168.1.1 pro router ISP1, viz obrázek</li>
+<li><img alt="topology_cv06" src="../skola/druhak/web/juniper/src/topology_cv06.png" /></li>
+</ul>
+<pre><code class="language-console">set protocols bgp group &lt;group-name&gt; local-address &lt;address&gt;
 </code></pre>
-		<ul>
-			<li>Z předchozí situace to bude adresa 192.168.1.10+X</li>
-			<li>Tento údaj není povinný, ale je doporučený</li>
-		</ul>
-		<h3 id="diagnostické-příkazy-1">Diagnostické příkazy</h3>
-		<pre class=" language-console"><code class="prism  language-console">show bgp neighbor
+<ul>
+<li>Z předchozí situace to bude adresa 192.168.1.10+X</li>
+<li>Tento údaj není povinný, ale je doporučený</li>
+</ul>
+<h3>Diagnostické příkazy</h3>
+<pre><code class="language-console">show bgp neighbor
 show bgp summary
 </code></pre>
-		<h2 id="route-import-export---policy">Route import (export) - policy</h2>
-		<pre class=" language-json"><code class="prism  language-json">policy<span class="token operator">-</span>options <span class="token punctuation">{</span>
-	policy<span class="token operator">-</span>statement <span class="token operator">&lt;</span>policy<span class="token operator">-</span>name<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
-		<span class="token keyword">from</span> protocol <span class="token operator">&lt;</span>protocol<span class="token operator">-</span>name<span class="token operator">&gt;</span><span class="token punctuation">;</span>
-		then accept<span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2>Route import (export) - policy</h2>
+<pre><code class="language-json">policy-options {
+    policy-statement &lt;policy-name&gt; {
+        from protocol &lt;protocol-name&gt;;
+        then accept;
+    }
+}
 </code></pre>
-		<h2 id="route-import-export---ospf">Route import (export) - OSPF</h2>
-		<pre class=" language-json"><code class="prism  language-json">protocols <span class="token punctuation">{</span>
-	ospf <span class="token punctuation">{</span>
-		<span class="token operator">&lt;</span><span class="token keyword">import</span><span class="token operator">/</span><span class="token keyword">export</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span>policy<span class="token operator">-</span>name<span class="token operator">&gt;</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2>Route import (export) - OSPF</h2>
+<pre><code class="language-json">protocols {
+    ospf {
+        &lt;import/export&gt; &lt;policy-name&gt;;
+    }
+}
 </code></pre>
-		<h2 id="route-import-export---bgp">Route import (export) - BGP</h2>
-		<pre class=" language-json"><code class="prism  language-json">protocols <span class="token punctuation">{</span>
-	bgp <span class="token punctuation">{</span>
-		group <span class="token operator">&lt;</span>group<span class="token operator">-</span>name<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
-			<span class="token operator">&lt;</span><span class="token keyword">import</span><span class="token operator">/</span><span class="token keyword">export</span><span class="token operator">&gt;</span> <span class="token operator">&lt;</span>policy<span class="token operator">-</span>name<span class="token operator">&gt;</span><span class="token punctuation">;</span>
-		<span class="token punctuation">}</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2>Route import (export) - BGP</h2>
+<pre><code class="language-json">protocols {
+    bgp {
+        group &lt;group-name&gt; {
+            &lt;import/export&gt; &lt;policy-name&gt;;
+        }
+    }
+}
 </code></pre>
-		<h1 id="exprotimport-policy-prakticky">Exprot/Import policy prakticky</h1>
-		<ul>
-			<li>Export je pro předání cest jinému protokolu</li>
-		</ul>
-		<h2 id="route-export-policy---bgp">Route export policy - BGP</h2>
-		<pre class=" language-json"><code class="prism  language-json">policy<span class="token operator">-</span>options <span class="token punctuation">{</span>
-	policy<span class="token operator">-</span>statement bgp_to_ospf <span class="token punctuation">{</span>
-		<span class="token keyword">from</span> protocol bgp<span class="token punctuation">;</span>
-		then accept<span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h1>Exprot/Import policy prakticky</h1>
+<ul>
+<li>Export je pro předání cest jinému protokolu</li>
+</ul>
+<h2>Route export policy - BGP</h2>
+<pre><code class="language-json">policy-options {
+    policy-statement bgp_to_ospf {
+        from protocol bgp;
+        then accept;
+    }
+}
 </code></pre>
-		<pre class=" language-json"><code class="prism  language-json">policy<span class="token operator">-</span>options <span class="token punctuation">{</span>
-	policy<span class="token operator">-</span>statement ospf_to_bgp <span class="token punctuation">{</span>
-		<span class="token keyword">from</span> protocol ospf<span class="token punctuation">;</span>
-		then accept<span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<pre><code class="language-json">policy-options {
+    policy-statement ospf_to_bgp {
+        from protocol ospf;
+        then accept;
+    }
+}
 </code></pre>
-		<ul>
-			<li>BGP automaticky nerozesílá cesty k přímo připojeným linkám, je potřeba to povolit:</li>
-		</ul>
-		<pre class=" language-json"><code class="prism  language-json">policy<span class="token operator">-</span>options <span class="token punctuation">{</span>
-	policy<span class="token operator">-</span>statement direct_to_bgp <span class="token punctuation">{</span>
-		<span class="token keyword">from</span> protocol direct<span class="token punctuation">;</span>
-		then accept<span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<ul>
+<li>BGP automaticky nerozesílá cesty k přímo připojeným linkám, je potřeba to povolit:</li>
+</ul>
+<pre><code class="language-json">policy-options {
+    policy-statement direct_to_bgp {
+        from protocol direct;
+        then accept;
+    }
+}
 </code></pre>
-		<h2 id="route-export---ospf">Route export - OSPF</h2>
-		<pre class=" language-json"><code class="prism  language-json">protocols <span class="token punctuation">{</span>
-	ospf <span class="token punctuation">{</span>
-		<span class="token keyword">export</span> bgp_to_ospf<span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2>Route export - OSPF</h2>
+<pre><code class="language-json">protocols {
+    ospf {
+        export bgp_to_ospf;
+    }
+}
 </code></pre>
-		<h2 id="route-export---bgp">Route export - BGP</h2>
-		<pre class=" language-json"><code class="prism  language-json">protocols <span class="token punctuation">{</span>
-	bgp <span class="token punctuation">{</span>
-		group <span class="token operator">&lt;</span>group<span class="token operator">-</span>name<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
-			<span class="token keyword">export</span> ospf_to_bgp<span class="token punctuation">;</span>
-		<span class="token punctuation">}</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2>Route export - BGP</h2>
+<pre><code class="language-json">protocols {
+    bgp {
+        group &lt;group-name&gt; {
+            export ospf_to_bgp;
+        }
+    }
+}
 </code></pre>
-		<h2 id="route-export---bgp-1">Route export - BGP</h2>
-		<pre class=" language-json"><code class="prism  language-json">protocols <span class="token punctuation">{</span>
-	bgp <span class="token punctuation">{</span>
-		group <span class="token operator">&lt;</span>group<span class="token operator">-</span>name<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
-			<span class="token keyword">export</span> direct_to_bgp<span class="token punctuation">;</span>
-		<span class="token punctuation">}</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2>Route export - BGP</h2>
+<pre><code class="language-json">protocols {
+    bgp {
+        group &lt;group-name&gt; {
+            export direct_to_bgp;
+        }
+    }
+}
 </code></pre>
-	</div>
+    </div>
 </body>
-
 </html>
