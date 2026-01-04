@@ -11,56 +11,42 @@
     <div class="stackedit__html">
         <p><img alt="c10-topology" src="./src/c10-topology.png" /></p>
 <h2>Nastavení IP adres a směrování</h2>
-<ol>
-<li>Nastavte IPv4 adresy dle topologie na všech Juniper</li>
-<li>Nastavte statické nebo dynamické směrování pro IPv4 dle obrázku topologie</li>
-<li>Zkontrolujte aplikaci nastavení - adresy, route</li>
-</ol>
-<pre><code class="language-console">&gt; show interfaces terse &gt; show route
+<h3>1. Nastavte IPv4 adresy dle topologie na všech Juniper</h3>
+<h3>2. Nastavte statické nebo dynamické směrování pro IPv4 dle obrázku topologie</h3>
+<h3>3. Zkontrolujte aplikaci nastavení - adresy, route</h3>
+<pre><code class="language-console">&gt; show interfaces terse 
 </code></pre>
-<ol>
-<li>Nastavte IP adresy a výchozí brány na koncových zařízeních</li>
-<li>Vyzkoušejte komunikaci mezi sousedními zařízeními</li>
-</ol>
+<pre><code class="language-console">&gt; show route
+</code></pre>
+<h3>4. Nastavte IP adresy a výchozí brány na koncových zařízeních</h3>
+<h3>5. Vyzkoušejte komunikaci mezi sousedními zařízeními</h3>
 <h2>IPv6 over IPv4 přes GRE tunnel</h2>
-<ol>
-<li>Zapněte směrování pro IPv6</li>
-</ol>
+<h3>1. Zapněte směrování pro IPv6</h3>
 <pre><code class="language-console"># set security forwarding-options family inet6 mode packet-based
 </code></pre>
-<ol>
-<li>Nastavte IPv6 adresy dle topologie na Juniper 1 a Juniper 3</li>
-<li>Zapnutí odesílání IPv6 router advertisement pro automatickou konfiguraci IPv6 na packet</li>
-</ol>
+<h3>2. Nastavte IPv6 adresy dle topologie na Juniper 1 a Juniper 3</h3>
+<h3>3. Zapnutí odesílání IPv6 router advertisement pro automatickou konfiguraci IPv6 na packet</h3>
 <pre><code class="language-console"># set protocols router-advertisement interface ge-0/0/0 prefix &lt;IPv6 address of network on interface&gt;/&lt;prefix length&gt;
 </code></pre>
-<ol>
-<li>Nastavte GRE tunel mezi Juniper 1 a Juniper 3 a nastavte mu IPv6 adresu</li>
-</ol>
-<pre><code class="language-console"># set interfaces gr-0/0/0 unit 0 tunnel source &lt;local IPv4 address&gt;destination &lt;remote IPv4 address&gt;
+<h3>4. Nastavte GRE tunel mezi Juniper 1 a Juniper 3 a nastavte mu IPv6 adresu</h3>
+<pre><code class="language-console"># set interfaces gr-0/0/0 unit 0 tunnel source &lt;local IPv4 address&gt; destination &lt;remote IPv4 address&gt;
 </code></pre>
-<pre><code># set interfaces gr-0/0/0 unit 0 family inet6 address &lt;IPv6 address for tunnel interface&gt;/&lt;prefix length&gt;
+<pre><code class="language-console"># set interfaces gr-0/0/0 unit 0 family inet6 address &lt;IPv6 address for tunnel interface&gt;/&lt;prefix length&gt;
 </code></pre>
-<ol>
-<li>Vložte statickou route mezi Juniper 1 a Juniper 3 přes GRE tunel nebo aktivujte OSPFv3 pro rozhraní ge-0/0/0 a gr-0/0/</li>
-</ol>
+<h3>5. Vložte statickou route mezi Juniper 1 a Juniper 3 přes GRE tunel nebo aktivujte OSPFv3 pro rozhraní ge-0/0/0 a gr-0/0/</h3>
 <pre><code class="language-console"># set routing-options rib inet6.0 static route &lt;IPv6 address of remote network&gt; next-hop &lt;IPv6 address of remote tunnel end&gt;
 </code></pre>
 <h2>Nastavení IPsec tunelu - násleudjící kroky provádějte na Juniper 1 aJuniper 3</h2>
-<ol>
-<li>Změňte security z packet-based na flow-based a restartujte zařízeních (restart a family mpls nejsou nutné na verzi 25.2; family inet nejde nastavit na verzi 23.2)</li>
-</ol>
+<h3>1. Změňte security z packet-based na flow-based a restartujte zařízeních (restart a family mpls nejsou nutné na verzi 25.2; family inet nejde nastavit na verzi 23.2)</h3>
 <pre><code class="language-console"># set security forwarding-options family inet mode flow-based set security forwarding-options family inet6 mode flow-based
 </code></pre>
 <pre><code class="language-console"># set security forwarding-options family mpls mode flow-based
 </code></pre>
-<pre><code># commit and-quit
+<pre><code class="language-console"># commit and-quit
 </code></pre>
-<pre><code>&gt; request system reboot
+<pre><code class="language-console">&gt; request system reboot
 </code></pre>
-<ol>
-<li>Nastavte security zóny, které budou povolovat všechno a přiřaďte je na rozhraní</li>
-</ol>
+<h3>2. Nastavte security zóny, které budou povolovat všechno a přiřaďte je na rozhraní</h3>
 <pre><code class="language-console"># set security zones security-zone TRUST host-inbound-traffic system-services all
 </code></pre>
 <pre><code class="language-console"># set security zones security-zone TRUST host-inbound-traffic protocols all set security zones security-zone TRUST interfaces ge-0/0/
@@ -71,9 +57,7 @@
 </code></pre>
 <pre><code class="language-console"># set security zones security-zone UNTRUST interfaces ge-0/0/&lt;x&gt;
 </code></pre>
-<ol>
-<li>Nastavte povolení všeho pro komunikaci mezi zónami TRUST a UNTRUST</li>
-</ol>
+<h3>3. Nastavte povolení všeho pro komunikaci mezi zónami TRUST a UNTRUST</h3>
 <pre><code class="language-console"># set security policies from-zone TRUST to-zone UNTRUST policy policy match source-address any
 </code></pre>
 <pre><code class="language-console"># set security policies from-zone TRUST to-zone UNTRUST policy policy match destination-address any
@@ -92,17 +76,13 @@ destination-address any
 </code></pre>
 <pre><code class="language-console"># set security policies from-zone UNTRUST to-zone TRUST policy policy then permit any
 </code></pre>
-<ol>
-<li>Potvrďte aktuální nastavení pomocí commit</li>
-<li>Načtěte funkcionality pro IPsec a IKE, následně na výzvu restartujte CLI a ověřte dostupnost IKE</li>
-</ol>
+<h3>4. Potvrďte aktuální nastavení pomocí commit</h3>
+<h3>5. Načtěte funkcionality pro IPsec a IKE, následně na výzvu restartujte CLI a ověřte dostupnost IKE</h3>
 <pre><code class="language-console"># run request system software add optional://junos-ike.tgz
 </code></pre>
 <pre><code class="language-console"># run show version | grep ike
 </code></pre>
-<ol>
-<li>Připravte IKE proposal pro vyjednání tunelu</li>
-</ol>
+<h3>6. Připravte IKE proposal pro vyjednání tunelu</h3>
 <pre><code class="language-console"># set security ike proposal IKE-PROP authentication-method pre-shared-keys 
 </code></pre>
 <pre><code class="language-console"># set security ike proposal IKE-PROP lifetime-seconds 3600
@@ -110,30 +90,24 @@ destination-address any
 <pre><code class="language-console"># set security ike proposal IKE-PROP authentication-algorithm sha-256 
 </code></pre>
 <pre><code class="language-console"># set security ike proposal IKE-PROP encryption-algorithm aes-256-cbc
-```console
-# set security ike proposal IKE-PROP dh-group group24
 </code></pre>
-<ol>
-<li>Nastavte politiku pro IKE tunel včetně sdíleného hesla</li>
-</ol>
+<pre><code class="language-console"># set security ike proposal IKE-PROP dh-group group24
+</code></pre>
+<h3>7. Nastavte politiku pro IKE tunel včetně sdíleného hesla</h3>
 <pre><code class="language-console"># set security ike policy IKE-POL proposals IKE-PROP
 </code></pre>
 <pre><code class="language-console"># set security ike policy IKE-POL mode main
 </code></pre>
 <pre><code class="language-console"># set security ike policy IKE-POL pre-shared-key ascii-text &lt;secret key&gt;
 </code></pre>
-<ol>
-<li>Nastavte adresu druhého konce tunelu a odchozí rozhraní</li>
-</ol>
+<h3>8. Nastavte adresu druhého konce tunelu a odchozí rozhraní</h3>
 <pre><code class="language-console"># set security ike gateway IKE-GW ike-policy IKE-POL 
 </code></pre>
 <pre><code class="language-console"># set security ike gateway IKE-GW address &lt;IPv4 of remote device&gt;
 </code></pre>
 <pre><code class="language-console"># set security ike gateway IKE-GW external-interface ge-0/0/&lt;x&gt;
 </code></pre>
-<ol>
-<li>Připravte IPsec proposal pro zabezpečení přenášených dat</li>
-</ol>
+<h3>9. Připravte IPsec proposal pro zabezpečení přenášených dat</h3>
 <pre><code class="language-console"># set security ipsec proposal IPSEC-PROP lifetime-seconds 1800 
 </code></pre>
 <pre><code class="language-console"># set security ipsec proposal IPSEC-PROP protocol esp
@@ -142,16 +116,12 @@ destination-address any
 </code></pre>
 <pre><code class="language-console"># set security ipsec proposal IPSEC-PROP encryption-algorithm aes-256-cbc
 </code></pre>
-<ol>
-<li>Nastavte IPsec policy pro zabezpečení přenášených dat</li>
-</ol>
+<h3>10. Nastavte IPsec policy pro zabezpečení přenášených dat</h3>
 <pre><code class="language-console"># set security ipsec policy IPSEC-POL proposals IPSEC-PROP 
 </code></pre>
 <pre><code class="language-console"># set security ipsec policy IPSEC-POL perfect-forward-secrecy keys group24
 </code></pre>
-<ol>
-<li>Definujte bránu a ustavení tunelů pro IPsec</li>
-</ol>
+<h3>11. Definujte bránu a ustavení tunelů pro IPsec</h3>
 <pre><code class="language-console"># set security ipsec vpn IPSEC-VPN ike gateway IKE-GW 
 </code></pre>
 <pre><code class="language-console"># set security ipsec vpn IPSEC-VPN ike ipsec-policy IPSEC-POL
@@ -160,35 +130,25 @@ destination-address any
 </code></pre>
 <pre><code class="language-console"># set security ipsec vpn IPSEC-VPN bind-interface st0.0
 </code></pre>
-<ol>
-<li>Nastavte rozhraní pro IPsec tunel</li>
-</ol>
+<h3>12. Nastavte rozhraní pro IPsec tunel</h3>
 <pre><code class="language-console"># set interfaces st0 unit 0 family inet address &lt;IP address&gt;/&lt;prefix length&gt;
 </code></pre>
-<ol>
-<li>Nastavte statickou route do druhé sítě přes IPsec tunel</li>
-</ol>
+<h3>13. Nastavte statickou route do druhé sítě přes IPsec tunel</h3>
 <pre><code class="language-console"># set routing-options rib inet.0 static route &lt;remote network address&gt;/&lt;prefix length&gt; next-hop st0.0
 </code></pre>
-<ol>
-<li>Vytvořte další security zónu pro rozhraní tunelu</li>
-</ol>
+<h3>14. Vytvořte další security zónu pro rozhraní tunelu</h3>
 <pre><code class="language-console"># set security zones security-zone VPN host-inbound-traffic system-services all
 </code></pre>
 <pre><code class="language-console"># set security zones security-zone VPN host-inbound-traffic protocols all 
 </code></pre>
 <pre><code class="language-console"># set security zones security-zone VPN interfaces st0.0
 </code></pre>
-<ol>
-<li>Definice adresy lokální a vzdálené sítě</li>
-</ol>
+<h3>15. Definice adresy lokální a vzdálené sítě</h3>
 <pre><code class="language-console"># set security address-book global address NET-LOCAL &lt;IP address of local network&gt;/&lt;prefix length&gt;
 </code></pre>
 <pre><code class="language-console"># set security address-book global address NET-REMOTE &lt;IP address of remote network&gt;/&lt;prefix length&gt;
 </code></pre>
-<ol>
-<li>Definice security policy mezi loklání zónou a VPN - definice provozu, který půjde tunelem</li>
-</ol>
+<h3>16. Definice security policy mezi loklání zónou a VPN - definice provozu, který půjde tunelem</h3>
 <pre><code class="language-console"># set security policies from-zone TRUST to-zone VPN policy policy match source-address NET-LOCAL
 </code></pre>
 <pre><code class="language-console"># set security policies from-zone TRUST to-zone VPN policy policy match destination-address NET-REMOTE
@@ -205,9 +165,7 @@ destination-address any
 </code></pre>
 <pre><code class="language-console"># set security policies from-zone VPN to-zone TRUST policy policy then permit
 </code></pre>
-<ol>
-<li>Ověřte funkčnost tunelu (ping, traceroute) a následující show příkazy (v případě, že následující showpříkazy nefungují je doporučeno provést reboot Juniper)</li>
-</ol>
+<h3>17. Ověřte funkčnost tunelu (ping, traceroute) a následující show příkazy (v případě, že následující showpříkazy nefungují je doporučeno provést reboot Juniper)</h3>
 <pre><code class="language-console">&gt; show security ike security-associations
 </code></pre>
 <pre><code class="language-console">&gt; show security ipsec security-associations
