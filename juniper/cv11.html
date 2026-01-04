@@ -1,144 +1,150 @@
-
 <!DOCTYPE html>
 <html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>11. cvičení.md</title>
-    <link rel="stylesheet" href="../styly.css">
-</head>
-<body class="stackedit">
-    <div class="stackedit__html">
-        <p><img alt="c11-topology" src="./src/c11-topology.png" /></p>
-<h1>CoS - Class of Service</h1>
-<h2>Definice front</h2>
-<pre><code class="language-console"># set class-of-service forwarding-classes queue 0 best-effort
-</code></pre>
-<pre><code class="language-console"># set class-of-service forwarding-classes queue 1 admin
-</code></pre>
-<pre><code class="language-console"># set class-of-service forwarding-classes queue 2 rtsp
-</code></pre>
-<pre><code class="language-console"># set class-of-service forwarding-classes queue 3 network-control
-</code></pre>
-<h2>Schedulers</h2>
-<p><img alt="c11-schedulers" src="./src/c11-schedulers.png" /></p>
-<pre><code class="language-console"># set class-of-service schedulers best-effort-scheduler transmit-rate percent 15
-</code></pre>
-<pre><code class="language-console"># class-of-service schedulers best-effort-scheduler buffer-size percent 15
-</code></pre>
-<pre><code class="language-console"># set class-of-service schedulers best-effort-scheduler priority low
-</code></pre>
-<pre><code class="language-json">root# show class-of-service schedulers
 
-    best-effort-scheduler {
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11. cvičení.md</title>
+  <link rel="stylesheet" href="../styly.css">
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html">
+    <h1>10. cvičení</h1>
+    <p><img alt="c11-topology" src="./src/c11-topology.png" /></p>
+    <h1>CoS - Class of Service</h1>
+    <h2>Definice front</h2>
+    <pre><code class="language-console"># set class-of-service forwarding-classes queue 0 best-effort
+      </code></pre>
+    <pre><code class="language-console"># set class-of-service forwarding-classes queue 1 admin
+      </code></pre>
+    <pre><code class="language-console"># set class-of-service forwarding-classes queue 2 rtsp
+      </code></pre>
+    <pre><code class="language-console"># set class-of-service forwarding-classes queue 3 network-control
+      </code></pre>
+    <h2>Schedulers</h2>
+    <p><img alt="c11-schedulers" src="./src/c11-schedulers.png" /></p>
+    <pre><code class="language-console"># set class-of-service schedulers best-effort-scheduler transmit-rate percent 15
+      </code></pre>
+    <pre><code class="language-console"># class-of-service schedulers best-effort-scheduler buffer-size percent 15
+      </code></pre>
+    <pre><code class="language-console"># set class-of-service schedulers best-effort-scheduler priority low
+      </code></pre>
+    <pre><code class="language-json">root# show class-of-service schedulers
+
+        best-effort-scheduler {
         transmit-rate percent 40;
         buffer-s ize percent 40;
         priority low;
-    }
+        }
 
-    admin-scheduler {
+        admin-scheduler {
         transmit-rate percent 40;
         buffer-size percent 40;
         priority medium-low;
-    }
+        }
 
-    rtsp-scheduler {
+        rtsp-scheduler {
         trans mit-rate percent 15;
         buffer-size percent 15;
         priority high;
-    }
+        }
 
-    network-control-scheduler {
+        network-control-scheduler {
         transmit-rate percent 5;
         buffer-size percent 5;
         priority medium-high;
-    }
-</code></pre>
-<h2>Scheduler maps</h2>
-<pre><code class="language-console"># set class-of-service scheduler-maps my-sched-map forwarding-class best-effort scheduler best-effort-scheduler
-</code></pre>
-<pre><code class="language-json">root# show class-of-service scheduler-maps
+        }
+      </code></pre>
+    <h2>Scheduler maps</h2>
+    <pre><code class="language-console"># set class-of-service scheduler-maps my-sched-map forwarding-class best-effort
+        scheduler best-effort-scheduler
+      </code></pre>
+    <pre><code class="language-json">root# show class-of-service scheduler-maps
 
-    my-sched-map {
+        my-sched-map {
         forwarding-class best-effort scheduler best-effort-scheduler;
         forwarding-class rtsp scheduler rtsp-scheduler;
         forwarding-class admin scheduler admin-scheduler;
         forwarding-class network-control scheduler network-control-scheduler;
-    }
-</code></pre>
-<h2>Mapování Scheduler-maps na interface</h2>
-<pre><code class="language-console"># set class-of-service interfaces ge-0/0/0 scheduler-map my-sched-map
-</code></pre>
-<pre><code class="language-json">root# show class-of-service interfaces
+        }
+      </code></pre>
+    <h2>Mapování Scheduler-maps na interface</h2>
+    <pre><code class="language-console"># set class-of-service interfaces ge-0/0/0 scheduler-map my-sched-map
+      </code></pre>
+    <pre><code class="language-json">root# show class-of-service interfaces
 
-    ge-0/0/0 {
+        ge-0/0/0 {
         scheduler-map my-sched-map;
-    }
+        }
 
-    ge-0/0/1 {
+        ge-0/0/1 {
         scheduler-map my-sched-map;
-    }
-</code></pre>
-<h2>Traffic marking (Firewall filters)</h2>
-<pre><code class="language-console"># set firewall family inet filter apply-cos-markings term admin from source-address x.x.x.x/x
-</code></pre>
-<pre><code class="language-console"># set firewall family inet filter apply-cos-markings term admin then forwarding-class admin
-</code></pre>
-<pre><code class="language-console"># set firewall family inet filter apply-cos-markings term admin then accept
-</code></pre>
-<pre><code class="language-json">root# show firewall
+        }
+      </code></pre>
+    <h2>Traffic marking (Firewall filters)</h2>
+    <pre><code class="language-console"># set firewall family inet filter apply-cos-markings term admin from
+        source-address x.x.x.x/x
+      </code></pre>
+    <pre><code class="language-console"># set firewall family inet filter apply-cos-markings term admin then
+        forwarding-class admin
+      </code></pre>
+    <pre><code class="language-console"># set firewall family inet filter apply-cos-markings term admin then accept
+      </code></pre>
+    <pre><code class="language-json">root# show firewall
 
-    family inet {
+        family inet {
         filter apply-cos-markings {
-            term admin {
-                from {
-                    source-address x.x.x.x/x
-                }
-
-                then {
-                    forwarding-class admin;
-                    accept;
-                }
-            }
-
-            term rtsp {
-                from {
-                    protocol [ tcp udp ];
-                    port 8554;
-                }
-
-                then {
-                    forwarding-class rtsp;
-                    accept;
-                }
-            }
-
-            term default {
-                then accept;
-            }
+        term admin {
+        from {
+        source-address x.x.x.x/x
         }
-    }
-</code></pre>
-<h2>Aplikování firewall filtru na interface</h2>
-<pre><code class="language-console"># set interfaces ge-0/0/0.0 family inet filter input apply-cos-markings
-</code></pre>
-<pre><code class="language-json">root# show interfaces
 
-    ge-0/0/0 {
+        then {
+        forwarding-class admin;
+        accept;
+        }
+        }
+
+        term rtsp {
+        from {
+        protocol [ tcp udp ];
+        port 8554;
+        }
+
+        then {
+        forwarding-class rtsp;
+        accept;
+        }
+        }
+
+        term default {
+        then accept;
+        }
+        }
+        }
+      </code></pre>
+    <h2>Aplikování firewall filtru na interface</h2>
+    <pre><code class="language-console"># set interfaces ge-0/0/0.0 family inet filter input apply-cos-markings
+      </code></pre>
+    <pre><code class="language-json">root# show interfaces
+
+        ge-0/0/0 {
         unit 0 {
-            family inet {
-                filter {
-                    input apply-cos-markings;
-                }
-
-                address x.x.x.x/x;
-            }
+        family inet {
+        filter {
+        input apply-cos-markings;
         }
-    }
-</code></pre>
-<h2>Troubleshoot &amp; Verification</h2>
-<pre><code class="language-console">&gt; show interfaces queue ge-0/0/0
-</code></pre>
-    </div>
+
+        address x.x.x.x/x;
+        }
+        }
+        }
+      </code></pre>
+    <h2>Troubleshoot &amp; Verification</h2>
+    <pre><code class="language-console">&gt; show interfaces queue ge-0/0/0
+      </code></pre>
+  </div>
 </body>
+
 </html>
